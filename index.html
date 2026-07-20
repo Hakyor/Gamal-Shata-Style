@@ -2,17 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>جمال شطا | للستائر والديكور</title>
     <meta name="description" content="جمال شطا للستائر والديكور - تصاميم فاخرة للستائر والديكور الداخلي في دمياط" />
+
+    <!-- ========== FONTS – فقط الأوزان المستخدمة ========== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet" />
 
     <style>
         /* ==========================================================
-           جمال شطا للستائر والديكور — Luxury One-Page
-           مستوحى من أفضل ممارسات الأداء من Hamza Elekiaby
+           جمال شطا للستائر والديكور — نسخة محسّنة
+           بدون لودر، بدون هامبرغر، مع تخطيط سطح المكتب على الجوال
            ========================================================== */
 
         :root {
@@ -122,60 +124,6 @@
             line-height: 1.3;
         }
 
-        /* ==================== LOADER ==================== */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--black);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            transition: opacity .7s var(--ease), visibility .7s var(--ease);
-        }
-        .loader-mark {
-            font-family: var(--font-display);
-            font-weight: 800;
-            font-size: 26px;
-            letter-spacing: 2px;
-            color: var(--gold-light);
-            opacity: 0;
-            animation: loaderFade 1s var(--ease) forwards .1s;
-        }
-        .loader-line {
-            width: 160px;
-            height: 1px;
-            background: rgba(201, 162, 39, 0.2);
-            overflow: hidden;
-            position: relative;
-        }
-        .loader-line span {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
-            animation: loaderSweep 1.4s ease-in-out infinite;
-        }
-        @keyframes loaderFade {
-            to {
-                opacity: 1;
-            }
-        }
-        @keyframes loaderSweep {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-        .loader.is-hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
         /* ==================== NAV ==================== */
         .nav {
             position: fixed;
@@ -246,26 +194,6 @@
         }
         .nav-link:hover::after {
             width: 100%;
-        }
-
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            width: 34px;
-            height: 34px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-        .nav-toggle span {
-            display: block;
-            width: 100%;
-            height: 1.5px;
-            background: var(--gold-light);
-            transition: transform .3s var(--ease), opacity .3s var(--ease);
         }
 
         /* ==================== HERO ==================== */
@@ -656,7 +584,7 @@
             font-size: 18px;
         }
 
-        /* --- Google Maps iframe — responsive --- */
+        /* --- Google Maps iframe — lazy-load via JS --- */
         .map-embed-wrapper {
             position: relative;
             width: 100%;
@@ -666,6 +594,8 @@
             border: 1px solid rgba(201, 162, 39, 0.22);
             background: var(--charcoal-light);
             transition: border-color .4s var(--ease), box-shadow .4s var(--ease);
+            min-height: 200px;
+            /* placeholder while loading */;
         }
         .map-embed-wrapper:hover {
             border-color: var(--gold-light);
@@ -679,6 +609,21 @@
             height: 100% !important;
             border: 0;
             display: block;
+        }
+        .map-placeholder-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-dim);
+            font-size: 14px;
+            background: var(--charcoal-light);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .map-embed-wrapper iframe.loaded+.map-placeholder-text {
+            display: none;
         }
 
         /* ==================== CONTACT ==================== */
@@ -1000,7 +945,9 @@
             transform: none;
         }
 
-        /* ==================== RESPONSIVE ==================== */
+        /* ==========================================================
+           RESPONSIVE – نسخة واحدة: نفس الهيدر على الجوال والكمبيوتر
+           ========================================================== */
         @media (max-width: 860px) {
             .location-grid {
                 grid-template-columns: 1fr;
@@ -1012,52 +959,37 @@
         }
 
         @media (max-width: 720px) {
-            /* ——— Mobile nav ——— 
-               أداء محسّن: خلفية صلبة بدون blur عشان نمنع التباطؤ
-            */
+            /* ===== الهيدر يبقى زي سطح المكتب ===== */
+            .nav-toggle {
+                display: none !important;
+            }
+
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: min(78vw, 320px);
-                background: #0b0b0e;
-                /* خلفية صلبة — لا blur عشان الأداء */
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: center;
-                gap: 30px;
-                padding: 40px;
-                transform: translateX(100%);
-                transition: transform .4s cubic-bezier(.22, .61, .36, 1);
-                will-change: transform;
-                border-left: 1px solid rgba(201, 162, 39, 0.18);
+                position: static;
+                display: flex;
+                flex-direction: row;
+                gap: 18px;
+                width: auto;
+                transform: none;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
-                /* نزيل أي تأثير blur */
-                box-shadow: -8px 0 40px rgba(0, 0, 0, 0.6);
             }
-            .nav-links.is-open {
-                transform: translateX(0);
-            }
+
             .nav-link {
-                font-size: 19px;
+                font-size: 14px;
                 color: var(--gray);
             }
+
             .nav-link:hover {
                 color: var(--white);
             }
-            .nav-toggle {
-                display: flex;
-            }
-            .nav-toggle.is-active span:nth-child(1) {
-                transform: translateY(6.5px) rotate(45deg);
-            }
-            .nav-toggle.is-active span:nth-child(2) {
-                opacity: 0;
-            }
-            .nav-toggle.is-active span:nth-child(3) {
-                transform: translateY(-6.5px) rotate(-45deg);
+
+            .nav-inner {
+                justify-content: space-between;
             }
 
             .masonry {
@@ -1122,36 +1054,25 @@
                 aspect-ratio: 1 / 1;
                 border-radius: 16px;
             }
-            .nav-links {
-                width: 100%;
-                max-width: 300px;
-                padding: 30px 24px;
-                gap: 24px;
-            }
             .nav-link {
-                font-size: 17px;
+                font-size: 13px;
+            }
+            .nav-links {
+                gap: 14px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ================= LOADER ================= -->
-    <div class="loader" id="loader">
-        <div class="loader-mark">جمال شطا</div>
-        <div class="loader-line"><span></span></div>
-    </div>
-
-    <!-- ================= NAV ================= -->
+    <!-- ================= NAV (نفس الشكل على الكمبيوتر والجوال) ================= -->
     <header class="nav" id="nav">
         <div class="nav-inner">
             <a href="#hero" class="nav-brand">
                 <span class="nav-brand-main">جمال شطا</span>
                 <span class="nav-brand-sub">للستائر والديكور</span>
             </a>
-            <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
+            <!-- تم حذف زر الهامبرغر نهائياً -->
             <nav class="nav-links" id="navLinks">
                 <a href="#hero" class="nav-link">الرئيسية</a>
                 <a href="#about" class="nav-link">من نحن</a>
@@ -1164,6 +1085,11 @@
     <!-- ================= HERO ================= -->
     <section class="hero" id="hero">
         <div class="hero-bg" id="heroBg">
+            <!--
+            ⚡ تحسين الأداء:
+            استخدم صورة WebP بحجم 1920px وعرض ~200-300KB بدلاً من JPG كبير.
+            مثال: hero.webp
+            -->
             <img src="hero.jpg" alt="ستائر فاخرة - جمال شطا للستائر والديكور" />
             <div class="hero-overlay"></div>
             <div class="hero-vignette"></div>
@@ -1292,9 +1218,12 @@
             </div>
 
             <div class="reveal" data-reveal="fade-up" data-delay="1">
-                <div class="map-embed-wrapper">
+                <div class="map-embed-wrapper" id="mapWrapper">
+                    <!-- الخريطة تُحمَّل فقط عندما يقترب المستخدم من القسم (lazy loading) -->
+                    <div class="map-placeholder-text">🗺️ جاري تحميل الخريطة...</div>
                     <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.57290488931!2d31.805210599999995!3d31.425891300000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f9e5613270c3f5%3A0xfbb2c3c0e5df3bf7!2z2KzZhdin2YQg2LTYt9in!5e0!3m2!1sen!2seg!4v1784536454034!5m2!1sen!2seg"
+                    id="mapIframe"
+                    data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.57290488931!2d31.805210599999995!3d31.425891300000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f9e5613270c3f5%3A0xfbb2c3c0e5df3bf7!2z2KzZhdin2YQg2LTYt9in!5e0!3m2!1sen!2seg!4v1784536454034!5m2!1sen!2seg"
                     title="موقع جمال شطا للستائر والديكور على خرائط جوجل"
                     loading="lazy"
                     referrerpolicy="strict-origin-when-cross-origin"
@@ -1405,19 +1334,12 @@
 
 <script>
     // ==========================================================
-    // جمال شطا — interactions
-    // مستوحى من أفضل ممارسات الأداء
+    // جمال شطا — تفاعلات سريعة وخفيفة
     // ==========================================================
     (function() {
         "use strict";
 
-        /* -------- Loader -------- */
-        window.addEventListener("load", function() {
-            var loader = document.getElementById("loader");
-            setTimeout(function() {
-                loader.classList.add("is-hidden");
-            }, 350);
-        });
+        /* -------- لا يوجد لودر — الصفحة تظهر فوراً -------- */
 
         /* -------- Nav scroll state -------- */
         var nav = document.getElementById("nav");
@@ -1431,24 +1353,6 @@
         }
         document.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
-
-        /* -------- Mobile nav toggle -------- */
-        var navToggle = document.getElementById("navToggle");
-        var navLinks = document.getElementById("navLinks");
-
-        navToggle.addEventListener("click", function() {
-            var isOpen = navLinks.classList.toggle("is-open");
-            navToggle.classList.toggle("is-active", isOpen);
-            navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
-
-        navLinks.querySelectorAll(".nav-link").forEach(function(link) {
-            link.addEventListener("click", function() {
-                navLinks.classList.remove("is-open");
-                navToggle.classList.remove("is-active");
-                navToggle.setAttribute("aria-expanded", "false");
-            });
-        });
 
         /* -------- Scroll reveal -------- */
         var revealEls = document.querySelectorAll(".reveal");
@@ -1521,6 +1425,51 @@
         document.addEventListener("keydown", function(e) {
             if (e.key === "Escape") closeLightbox();
         });
+
+        /* -------- Lazy-load Google Map -------- */
+        var mapWrapper = document.getElementById("mapWrapper");
+        var mapIframe = document.getElementById("mapIframe");
+        var mapLoaded = false;
+
+        if (mapWrapper && mapIframe) {
+            var mapObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !mapLoaded) {
+                        mapLoaded = true;
+                        // نسخ الرابط من data-src إلى src
+                        var src = mapIframe.getAttribute("data-src");
+                        if (src) {
+                            mapIframe.setAttribute("src", src);
+                            mapIframe.removeAttribute("data-src");
+                            // إخفاء النص الوهمي
+                            var placeholder = mapWrapper.querySelector(".map-placeholder-text");
+                            if (placeholder) placeholder.style.display = "none";
+                        }
+                        mapObserver.unobserve(mapWrapper);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px 200px 0px" });
+
+            mapObserver.observe(mapWrapper);
+        }
+
+        // إذا كان المستخدم قد مرّر سريعاً ونزل للخريطة، نتأكد من تحميلها
+        // (حل احتياطي لو فشل الـ IntersectionObserver)
+        setTimeout(function() {
+            if (!mapLoaded && mapWrapper && mapIframe) {
+                var rect = mapWrapper.getBoundingClientRect();
+                if (rect.top < window.innerHeight + 300) {
+                    var src = mapIframe.getAttribute("data-src");
+                    if (src) {
+                        mapLoaded = true;
+                        mapIframe.setAttribute("src", src);
+                        mapIframe.removeAttribute("data-src");
+                        var placeholder = mapWrapper.querySelector(".map-placeholder-text");
+                        if (placeholder) placeholder.style.display = "none";
+                    }
+                }
+            }
+        }, 2000);
 
     })();
 </script>
