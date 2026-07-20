@@ -11,24 +11,22 @@
 
     <style>
         /* ==========================================================
-           جمال شطا للستائر والديكور — Luxury One-Page Site
+           جمال شطا للستائر والديكور — Luxury One-Page
+           مستوحى من أفضل ممارسات الأداء من Hamza Elekiaby
            ========================================================== */
 
         :root {
             --black: #08080a;
             --charcoal: #131316;
             --charcoal-light: #1c1c20;
-            --charcoal-glass: rgba(24, 24, 27, 0.55);
             --gold: #C9A227;
             --gold-light: #E9C877;
             --gold-dim: #7d6a24;
             --white: #F7F5F0;
             --gray: #B7B3AA;
             --gray-dim: #7d7a74;
-
             --font-display: 'Cairo', sans-serif;
             --font-body: 'Tajawal', sans-serif;
-
             --ease: cubic-bezier(.22, .61, .36, 1);
             --container: 1180px;
         }
@@ -81,7 +79,6 @@
             color: var(--black);
         }
 
-        /* scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -261,6 +258,7 @@
             background: none;
             border: none;
             cursor: pointer;
+            padding: 0;
         }
         .nav-toggle span {
             display: block;
@@ -473,7 +471,7 @@
             font-size: 16px;
         }
 
-        /* ==================== THREAD DIVIDER (signature) ==================== */
+        /* ==================== THREAD DIVIDER ==================== */
         .thread-divider {
             position: relative;
             height: 60px;
@@ -658,7 +656,7 @@
             font-size: 18px;
         }
 
-        /* --- Google Maps iframe wrapper — fully responsive --- */
+        /* --- Google Maps iframe — responsive --- */
         .map-embed-wrapper {
             position: relative;
             width: 100%;
@@ -865,8 +863,6 @@
             color: var(--gray-dim);
             margin: 10px 0 0;
         }
-
-        /* ----- credit line ----- */
         .footer-credit {
             font-size: 13px;
             color: var(--gray-dim);
@@ -1016,15 +1012,17 @@
         }
 
         @media (max-width: 720px) {
-            /* ——— Mobile nav ——— */
+            /* ——— Mobile nav ——— 
+               أداء محسّن: خلفية صلبة بدون blur عشان نمنع التباطؤ
+            */
             .nav-links {
                 position: fixed;
                 top: 0;
                 right: 0;
                 bottom: 0;
                 width: min(78vw, 320px);
-                /* solid background, no backdrop-filter (fixes lag) */
                 background: #0b0b0e;
+                /* خلفية صلبة — لا blur عشان الأداء */
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: center;
@@ -1034,9 +1032,10 @@
                 transition: transform .4s cubic-bezier(.22, .61, .36, 1);
                 will-change: transform;
                 border-left: 1px solid rgba(201, 162, 39, 0.18);
-                /* remove blur for performance */
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
+                /* نزيل أي تأثير blur */
+                box-shadow: -8px 0 40px rgba(0, 0, 0, 0.6);
             }
             .nav-links.is-open {
                 transform: translateX(0);
@@ -1077,7 +1076,6 @@
             .about-stats {
                 gap: 18px;
             }
-            /* map tweak for small screens */
             .map-embed-wrapper {
                 aspect-ratio: 4 / 3;
                 border-radius: 18px;
@@ -1196,7 +1194,7 @@
         </a>
     </section>
 
-    <!-- gold thread divider (signature element) -->
+    <!-- gold thread divider -->
     <div class="thread-divider" aria-hidden="true">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path class="thread-path" d="M0,40 C 240,90 480,-10 720,40 C 960,90 1200,-10 1440,40" />
@@ -1339,7 +1337,7 @@
             <a href="https://wa.me/201223128604" target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg">
                 <span class="btn-icon">💬</span> واتساب
             </a>
-            <a href="https://www.instagram.com/gamal.shatastyle?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
+            <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
                 <span class="btn-icon">📷</span> إنستجرام
             </a>
         </div>
@@ -1377,7 +1375,7 @@
         <div class="footer-social">
             <a href="tel:01223128604" aria-label="اتصل بنا">📞</a>
             <a href="https://wa.me/201223128604" target="_blank" rel="noopener" aria-label="واتساب">💬</a>
-            <a href="https://www.instagram.com/gamal.shatastyle?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="إنستجرام">📷</a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="إنستجرام">📷</a>
         </div>
         <p class="footer-rights">© جميع الحقوق محفوظة — جمال شطا للستائر والديكور</p>
         <p class="footer-credit">
@@ -1406,7 +1404,10 @@
 </div>
 
 <script>
-    // جمال شطا للستائر والديكور — interactions
+    // ==========================================================
+    // جمال شطا — interactions
+    // مستوحى من أفضل ممارسات الأداء
+    // ==========================================================
     (function() {
         "use strict";
 
@@ -1434,11 +1435,13 @@
         /* -------- Mobile nav toggle -------- */
         var navToggle = document.getElementById("navToggle");
         var navLinks = document.getElementById("navLinks");
+
         navToggle.addEventListener("click", function() {
             var isOpen = navLinks.classList.toggle("is-open");
             navToggle.classList.toggle("is-active", isOpen);
             navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
         });
+
         navLinks.querySelectorAll(".nav-link").forEach(function(link) {
             link.addEventListener("click", function() {
                 navLinks.classList.remove("is-open");
@@ -1481,6 +1484,7 @@
             heroBg.style.transform = "translateY(" + (progress * 90) + "px) scale(" + (1 + progress * 0.08) + ")";
             ticking = false;
         }
+
         document.addEventListener(
             "scroll",
             function() {
