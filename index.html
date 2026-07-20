@@ -658,10 +658,11 @@
             font-size: 18px;
         }
 
-        /* --- Google Maps iframe wrapper --- */
+        /* --- Google Maps iframe wrapper — fully responsive --- */
         .map-embed-wrapper {
             position: relative;
-            aspect-ratio: 4/3;
+            width: 100%;
+            aspect-ratio: 4 / 3;
             border-radius: 22px;
             overflow: hidden;
             border: 1px solid rgba(201, 162, 39, 0.22);
@@ -676,8 +677,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: 0;
             display: block;
         }
@@ -1015,28 +1016,37 @@
         }
 
         @media (max-width: 720px) {
+            /* ——— Mobile nav ——— */
             .nav-links {
                 position: fixed;
                 top: 0;
                 right: 0;
                 bottom: 0;
                 width: min(78vw, 320px);
-                background: rgba(10, 10, 12, 0.98);
-                backdrop-filter: blur(20px);
-                border-left: 1px solid rgba(201, 162, 39, 0.18);
+                /* solid background, no backdrop-filter (fixes lag) */
+                background: #0b0b0e;
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: center;
                 gap: 30px;
                 padding: 40px;
                 transform: translateX(100%);
-                transition: transform .45s var(--ease);
+                transition: transform .4s cubic-bezier(.22, .61, .36, 1);
+                will-change: transform;
+                border-left: 1px solid rgba(201, 162, 39, 0.18);
+                /* remove blur for performance */
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
             }
             .nav-links.is-open {
                 transform: translateX(0);
             }
             .nav-link {
                 font-size: 19px;
+                color: var(--gray);
+            }
+            .nav-link:hover {
+                color: var(--white);
             }
             .nav-toggle {
                 display: flex;
@@ -1066,6 +1076,11 @@
             }
             .about-stats {
                 gap: 18px;
+            }
+            /* map tweak for small screens */
+            .map-embed-wrapper {
+                aspect-ratio: 4 / 3;
+                border-radius: 18px;
             }
         }
 
@@ -1104,6 +1119,19 @@
                 width: 50px;
                 height: 50px;
                 font-size: 21px;
+            }
+            .map-embed-wrapper {
+                aspect-ratio: 1 / 1;
+                border-radius: 16px;
+            }
+            .nav-links {
+                width: 100%;
+                max-width: 300px;
+                padding: 30px 24px;
+                gap: 24px;
+            }
+            .nav-link {
+                font-size: 17px;
             }
         }
     </style>
@@ -1269,13 +1297,10 @@
                 <div class="map-embed-wrapper">
                     <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.57290488931!2d31.805210599999995!3d31.425891300000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f9e5613270c3f5%3A0xfbb2c3c0e5df3bf7!2z2KzZhdin2YQg2LTYt9in!5e0!3m2!1sen!2seg!4v1784536454034!5m2!1sen!2seg"
-                    width="600"
-                    height="450"
-                    style="border:0;"
-                    allowfullscreen=""
+                    title="موقع جمال شطا للستائر والديكور على خرائط جوجل"
                     loading="lazy"
                     referrerpolicy="strict-origin-when-cross-origin"
-                    title="موقع جمال شطا للستائر والديكور على خرائط جوجل"
+                    allowfullscreen
                 ></iframe>
             </div>
         </div>
@@ -1314,7 +1339,7 @@
             <a href="https://wa.me/201223128604" target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg">
                 <span class="btn-icon">💬</span> واتساب
             </a>
-            <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
+            <a href="https://www.instagram.com/gamal.shatastyle?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
                 <span class="btn-icon">📷</span> إنستجرام
             </a>
         </div>
@@ -1352,7 +1377,7 @@
         <div class="footer-social">
             <a href="tel:01223128604" aria-label="اتصل بنا">📞</a>
             <a href="https://wa.me/201223128604" target="_blank" rel="noopener" aria-label="واتساب">💬</a>
-            <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="إنستجرام">📷</a>
+            <a href="https://www.instagram.com/gamal.shatastyle?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="إنستجرام">📷</a>
         </div>
         <p class="footer-rights">© جميع الحقوق محفوظة — جمال شطا للستائر والديكور</p>
         <p class="footer-credit">
