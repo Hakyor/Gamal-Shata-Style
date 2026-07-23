@@ -46,8 +46,7 @@
         html {
             scroll-behavior: smooth;
             height: 100%;
-            /* منع التمرير أثناء تحميل الصفحة */
-            overflow: hidden;
+            /* overflow: hidden; — تم إزالتها لأننا نتحكم بها عبر JS بعد التحميل */
         }
 
         body {
@@ -60,7 +59,6 @@
             overflow-x: hidden;
             height: 100%;
             min-height: 100dvh;
-            /* استخدام dvh ديناميكي */
             min-height: -webkit-fill-available;
             /* دعم iOS Safari */
         }
@@ -1423,7 +1421,8 @@
     <!-- ================= HERO ================= -->
     <section class="hero" id="hero">
         <div class="hero-bg" id="heroBg">
-            <img src="https://picsum.photos/id/1043/1200/800" alt="ستائر فاخرة - جمال شطا للستائر والديكور" />
+            <!-- استخدم الصورة المحلية hero.jpg -->
+            <img src="hero.jpg" alt="ستائر فاخرة - جمال شطا للستائر والديكور" />
         </div>
 
         <div class="hero-content">
@@ -1493,27 +1492,27 @@
 
             <div class="gallery-grid">
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="1">
-                    <img src="https://picsum.photos/id/1044/600/800" alt="تصميم ستائر فاخرة 1" loading="lazy" />
+                    <img src="gallery1.jpg" alt="تصميم ستائر فاخرة 1" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="2">
-                    <img src="https://picsum.photos/id/1060/600/800" alt="تصميم ستائر فاخرة 2" loading="lazy" />
+                    <img src="gallery2.jpg" alt="تصميم ستائر فاخرة 2" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="3">
-                    <img src="https://picsum.photos/id/1067/600/800" alt="تصميم ستائر فاخرة 3" loading="lazy" />
+                    <img src="gallery3.jpg" alt="تصميم ستائر فاخرة 3" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="1">
-                    <img src="https://picsum.photos/id/1074/600/800" alt="تصميم ستائر فاخرة 4" loading="lazy" />
+                    <img src="gallery4.jpg" alt="تصميم ستائر فاخرة 4" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="2">
-                    <img src="https://picsum.photos/id/1084/600/800" alt="تصميم ستائر فاخرة 5" loading="lazy" />
+                    <img src="gallery5.jpg" alt="تصميم ستائر فاخرة 5" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
                 <div class="gallery-item reveal" data-reveal="zoom" data-delay="3">
-                    <img src="https://picsum.photos/id/1099/600/800" alt="تصميم ستائر فاخرة 6" loading="lazy" />
+                    <img src="gallery6.jpg" alt="تصميم ستائر فاخرة 6" loading="lazy" />
                     <span class="gallery-tag"></span><span class="gallery-tag br"></span>
                 </div>
             </div>
@@ -1654,22 +1653,19 @@
                 if (!loadingOverlay) return;
                 loadingOverlay.classList.add("hidden");
                 document.body.classList.add("page-loaded");
-                // إزالة منع التمرير من html
-                document.documentElement.style.overflow = "";
-                // إزالة height:100% من html بعد التحميل
+                // إصلاح التمرير: نضبط overflow على auto لإظهار شريط التمرير
+                document.documentElement.style.overflow = "auto";
                 document.documentElement.style.height = "auto";
             }
 
             // التحقق من جاهزية الصفحة
             if (document.readyState === "complete") {
-                // إذا كانت الصفحة محملة بالفعل
                 setTimeout(hideLoading, 400);
             } else {
                 window.addEventListener("load", function() {
-                    // نعطي فترة بسيطة للتأكد من اكتمال كل شيء
                     setTimeout(hideLoading, 500);
                 });
-                // تأمين: إذا تأخر التحميل أكثر من 5 ثوانٍ، نخفيها强制
+                // تأمين: إذا تأخر التحميل أكثر من 5 ثوانٍ، نخفيها
                 setTimeout(function() {
                     if (loadingOverlay && !loadingOverlay.classList.contains("hidden")) {
                         hideLoading();
@@ -1684,9 +1680,7 @@
 
             function fixHeroHeight() {
                 if (!hero) return;
-                // نستخدم dvh عبر css بالفعل، لكن نضمن أن يكون الارتفاع صحيحاً
                 var vh = window.innerHeight;
-                // إذا كان الجهاز محمولاً (عرض أقل من 700) نضبط الارتفاع يدوياً
                 if (window.innerWidth < 700) {
                     hero.style.minHeight = vh + "px";
                     hero.style.height = vh + "px";
@@ -1696,17 +1690,13 @@
                 }
             }
 
-            // تنفيذ فوراً
             fixHeroHeight();
 
-            // عند تغيير حجم الشاشة
             var resizeTimer;
             window.addEventListener("resize", function() {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(fixHeroHeight, 150);
             });
-
-            // عند تغيير الاتجاه (portrait/landscape)
             window.addEventListener("orientationchange", function() {
                 setTimeout(fixHeroHeight, 300);
             });
@@ -1882,7 +1872,6 @@
                 }, { threshold: .1, rootMargin: "0px 0px 200px 0px" });
                 mapObserver.observe(mapWrapper);
 
-                // تحميل الخريطة بعد 2.5 ثانية في حالة عدم ظهورها
                 setTimeout(function() {
                     if (!mapLoaded && mapWrapper) {
                         var rect = mapWrapper.getBoundingClientRect();
@@ -1896,7 +1885,7 @@
                ========================================================= */
             document.querySelectorAll("img").forEach(function(img) {
                 img.addEventListener("error", function() {
-                    // إذا فشل تحميل الصورة، نستخدم صورة بديلة
+                    // إذا فشل تحميل الصورة، نستخدم صورة SVG بديلة تحمل اسم العلامة التجارية
                     if (!img.dataset.fallback) {
                         img.dataset.fallback = "true";
                         img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800'%3E%3Crect width='600' height='800' fill='%231e3f34'/%3E%3Ctext x='300' y='400' font-family='sans-serif' font-size='30' fill='%23c1904f' text-anchor='middle' dominant-baseline='central'%3Eجمال شطا%3C/text%3E%3Ctext x='300' y='450' font-family='sans-serif' font-size='18' fill='%23a9beb5' text-anchor='middle' dominant-baseline='central'%3Eللستائر والديكور%3C/text%3E%3C/svg%3E";
